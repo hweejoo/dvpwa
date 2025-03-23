@@ -10,16 +10,15 @@ def setup_database(app: Application):
 
 
 async def _init_pg(app: Application):
-    conf = app['config']['db']
+    conf = app["config"]["db"]
 
-    dsn = (
-        'dbname={database} user={user} password={password} host={host} port={port}'
-        .format(**conf)
+    dsn = "dbname={database} user={user} password={password} host={host} port={port}".format(
+        **conf
     )
     db = await aiopg.create_pool(dsn)
-    app['db'] = db
+    app["db"] = db
 
 
 async def _close_pg(app: Application):
-    app['db'].close()
-    await app['db'].wait_closed()
+    app["db"].close()
+    await app["db"].wait_closed()

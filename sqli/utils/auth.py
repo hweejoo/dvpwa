@@ -19,13 +19,15 @@ def authorize(ensure_admin=False):
             if ensure_admin and not user.is_admin:
                 raise HTTPForbidden()
             return await handler(request)
+
         return __wrapper__
+
     return __decorator__
 
 
 async def get_auth_user(request: Request) -> Optional[User]:
     app: Application = request.app
     session = await get_session(request)
-    user_id = session.get('user_id')
-    async with app['db'].acquire() as conn:
+    user_id = session.get("user_id")
+    async with app["db"].acquire() as conn:
         return await User.get(conn, user_id)
